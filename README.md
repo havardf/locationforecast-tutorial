@@ -1,1 +1,1 @@
-# Getting started locationforecast
+# Getting started with locationforecast
