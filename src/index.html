@@ -1,15 +1,16 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="css/normalize.css" />
-        <link rel="stylesheet" type="text/css" href="css/milligram.css" />
-        <script src="weathertable.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/milligram.min.css" />
+        <script src="weatherforecast.js"></script>
         <title>Weather in Lilongwe</title>
     </head>
     <body>
         <h1>Weather in Malawi</h1>
         <a class="button" href="#" onclick="weatherForecast('lilongwe')">Lilongwe</a>
         <a class="button" href="#" onclick="weatherForecast('blantyre')">Blantyre</a>
-        
-        <table id="weatherTable"></table>
+        <a class="button" href="#" onclick="weatherForecast('mzuzu')">Mzuzu</a>
+
+        <div id="weatherForecast"></div>
     </body>
 </html>
