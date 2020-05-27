@@ -15,12 +15,16 @@ let places = {
 
 let forecastParameters = [
     {
-        tableName: "Temperature",
-        forecastName: "air_temperature"
+        tableName: "Temperature (C)",
+        valueFunction: airTemperature
     },
     {
-        tableName: "Wind Speed",
-        forecastName: "wind_speed"
+        tableName: "Wind Speed (m/s)",
+        valueFunction: windSpeed
+    },
+    {
+        tableName: "Precipitation (mm)",
+        valueFunction: precipitation 
     }
 ];
 
@@ -62,7 +66,7 @@ function weatherTable(place, forecast) {
 function weatherTableHeaders(parameters) {
     let tableHeaders = document.createElement('tr');
     let th = document.createElement('th');
-    th.appendChild(document.createTextNode("Time in UTC"));
+    th.appendChild(document.createTextNode("Time (UTC)"));
     tableHeaders.appendChild(th);
 
     parameters.forEach((parameter) => {
@@ -85,7 +89,7 @@ function weatherTableRows(parameters, forecast) {
 
         parameters.forEach((parameter) => {
             let td = document.createElement('td');
-            td.appendChild(document.createTextNode(time.data.instant.details[parameter.forecastName]));
+            td.appendChild(document.createTextNode(parameter.valueFunction(time)));
             forecastValues.appendChild(td);
         });
         tableBody.appendChild(forecastValues)
@@ -106,4 +110,33 @@ function formatTime(timestamp) {
         time.getDate() + " " + monthNames[time.getMonth()] + ",  " + hourOfDay;
 
     return formattedTime;
+}
+
+function airTemperature(forecastTime) {
+    return forecastTime.data.instant.details.air_temperature;
+}
+
+function precipitation(forecastTime) {
+    if (hasProperty(forecastTime, 'data.next_1_hours.details.precipitation_amount')) {
+        return forecastTime.data.next_1_hours.details.precipitation_amount;
+    }
+    else if (hasProperty(forecastTime, 'data.next_6_hours.details.precipitation_amount')) {
+        return forecastTime.data.next_6_hours.details.precipitation_amount;
+    }
+    else {
+        return "";
+    }
+}
+
+function windSpeed(forecastTime) {
+    return forecastTime.data.instant.details.wind_speed;
+}
+
+function hasProperty(obj, key) {
+    return key.split(".").every(function(x) {
+        if(typeof obj != "object" || obj === null || ! x in obj)
+            return false;
+        obj = obj[x];
+        return true;
+    });
 }
