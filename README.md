@@ -93,7 +93,7 @@ Again, open the `src/index.html` file in your editor. Delete everyting there, an
         <link rel="stylesheet" type="text/css" href="css/milligram.min.css" />
         <script src="createHTMLTable.js"></script>
         <script src="weatherforecast.js"></script>
-        <title>Weather in Lilongwe</title>
+        <title>Weather in Malawi</title>
     </head>
     <body>
         <h1>Weather in Malawi</h1>
