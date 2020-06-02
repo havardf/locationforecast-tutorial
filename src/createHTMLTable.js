@@ -40,7 +40,7 @@ function createTable(place, forecast) {
 function tableHeaders(parameters) {
     let tableHeaders = document.createElement('tr');
     let th = document.createElement('th');
-    th.appendChild(document.createTextNode("Time (UTC)"));
+    th.appendChild(document.createTextNode("Time (local time zone)"));
     tableHeaders.appendChild(th);
 
     parameters.forEach((parameter) => {
