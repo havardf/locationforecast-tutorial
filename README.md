@@ -107,7 +107,7 @@ Again, open the src/index.html file in your editor. Delete everyting there, and 
 
 Now, save that file.
 
-### Javascript 1: Web page createion
+### Javascript 1: Web page creation
 Now, it will be the job of the javascript code to generate the forecast presented on the web page. We will not go into the details of the actual HTML generation,
 so please just copy over the file that handles all that:
 ```
@@ -204,9 +204,56 @@ function windSpeed(forecastTime) {
 }
 ```
 
+So, e.g, `airTemperature` function simply finds the correct value for a given time through a json structure like this:
+```
+{
+        "time": "2020-06-02T11:00:00Z",
+        "data": {
+          "instant": {
+            "details": {
+              "air_pressure_at_sea_level": 1019.5,
+              "air_temperature": 24.2,
+              "cloud_area_fraction": 0.0,
+              "cloud_area_fraction_high": 0.0,
+              "cloud_area_fraction_low": 0.0,
+              "cloud_area_fraction_medium": 0.0,
+              "dew_point_temperature": 8.3,
+              "fog_area_fraction": 0.0,
+              "relative_humidity": 36.6,
+              "ultraviolet_index_clear_sky": 7.4,
+              "wind_from_direction": 156.6,
+              "wind_speed": 1.9
+            }
+          },
+          "next_1_hours": {
+            "summary": {
+              "symbol_code": "clearsky_day"
+            },
+            "details": {
+              "precipitation_amount": 0.0
+            }
+          },
+          "next_6_hours": {
+            "summary": {
+              "symbol_code": "clearsky_day"
+            },
+            "details": {
+              "air_temperature_max": 24.5,
+              "air_temperature_min": 17.8,
+              "precipitation_amount": 0.0
+            }
+          }
+        }
+      }
+```
+
+Finally, precipication is handled specially, since the values for precipitation are not for a time instant, but for a period. The period (1 hour, 6 hour) are specified explicitly in the json structure, e.g `next_1_hours`. When the time resolution for the timeseries switches from 1 hour to 6 hour, we must also switch the name of the json attribute we use. If that is not done, you will not get any precipitation values for the second half of the timeseries.
 
 ## Start finished setup
+Now, everything should be in place.
+Start nginx again:
 ```
-docker run --rm --name nginx-locationforecast-tutorial -p 9080:80  -v /home/havardf/git/locationforecast-tutorial/nginx/nginx.conf:/etc/nginx/nginx.conf:ro -v /home/havardf/git/locationforecast-tutorial/src:/usr/share/nginx/html:ro nginx
+start ../nginx -p ./ -c ./nginx/nginx.conf
 ```
-Go to `http://localhost:9080` in your browser.
+
+Go to `http://localhost:9080` in your browser. Click on one of the listed places, and you will get a forecast for that place.

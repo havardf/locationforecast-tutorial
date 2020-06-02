@@ -62,17 +62,3 @@ function precipitation(forecastTime) {
 function windSpeed(forecastTime) {
     return forecastTime.data.instant.details.wind_speed;
 }
-
-function formatTime(timestamp) {
-    let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    let monthNames = [
-        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-    ];
-
-    let time = new Date(timestamp);
-    let hourOfDay = time.getHours() > 9 ? "" + time.getHours() + ":00": "0" + time.getHours() + ":00"; 
-    let formattedTime = "" + daysOfWeek[time.getDay()] + ", " +
-        time.getDate() + " " + monthNames[time.getMonth()] + ",  " + hourOfDay;
-
-    return formattedTime;
-}
