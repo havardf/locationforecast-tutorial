@@ -21,10 +21,15 @@ Follow the instructions from here: https://git-scm.com/downloads.
 ## Tutorial step 1: Nginx setup
 Nginx setup will provide distribution of the web page, and proxy traffic between the web page and https://api.met.no. It will also cache the data from api.met.no for a while.
 
-### Install nginx
-Download nginx for windows from this link: `http://nginx.org/download/nginx-1.18.0.zip`
+### Download the entire tutorial repository
+```
+git clone https://github.com/havardf/locationforecast-tutorial.git
+```
 
-Open a shell and go to the download directory and do the following:
+### Install nginx
+Go to http://nginx.org/en/download.html and download the `Stable version` of nginx for windows.
+
+Open a shell and go to your download directory and do the following:
 ```
 unzip nginx-1.18.0.zip
 cd nginx-1.18.0
@@ -39,54 +44,11 @@ mkdir src
 ```
 
 ### Create nginx configuration
-Open your favourite editor and create a new file: `conf/nginx.conf`.
+The nginx configuration handles both serving of web page files and proxying traffic to api.met.no.
 
-Write the following block into that file. The `#` lines are comments meant to explain the purpose of each block of configuration. 
-
-Please do not copy-paste, as its easier to understand when writing yourself.
-
+Copy the config file from the locationforecast-tutorial repository:
 ```
-http {
-  include /etc/nginx/mime.types;
-
-  proxy_cache_path /var/tmp/nginx-cache levels=1:2 keys_zone=api_met_no:10m max_size=200m 
-                 inactive=120m use_temp_path=off;
-
-  # Configuration needed for requesting data from api.met.no. Used later in the 'location /weatherapi' block.
-  upstream api.met.no {
-    keepalive 3;
-
-    server api.met.no:443 max_fails=2;
-  }
-  
-  server {
-    # Listen for connections on port 9080, e.g http://localhost:9080.
-    listen       9080;
-    server_name  localhost;
-  
-    # Index page, e.g http://localhost:9080.
-    location / {
-        root html/;
-        index index.html;
-    }
-
-    # Serve static files. All the html, javascript and css we are going to add in this tutorial.
-    location ~* \.(js|css)$ {
-      root    /usr/share/nginx/html/;
-    }
-
-    # Proxy requests for forecasts to api.met.no. All forecast data seen on the tutorial web page gets requested through the following setup.
-    location /weatherapi {
-      proxy_cache api_met_no;
-      proxy_set_header User-Agent "github.com/havardf/locationforecast-tutorial/0.1 nginx-proxy";
-      proxy_set_header Connection "";
-
-      proxy_ssl_session_reuse on;
-
-      proxy_pass      https://api.met.no;
-    }
-  }
-}
+copy locationforecast-tutorial/nginx/nginx.conf nginx/nginx.conf
 ```
 
 ### Create empty index page
@@ -102,7 +64,7 @@ Create a new file: src/index.html. Write the below in that file, and save.
 
 ### Start/stop nginx
 ```
-start nginx -p ./ -c ./nginx/nginx.conf
+start ../nginx -p ./ -c ./nginx/nginx.conf
 ```
 
 ### Test nginx setup
@@ -111,10 +73,6 @@ Open your favourite browser and go to `http://localhost:9080`. If you now see a 
 ## Tutorial step 2: Web page
 Now we are going to create a simple web page that presents weather forecast from a few cities in Malawi. The forecast comes from the web service https://api.met.no/weatherapi/locationforecast/2.0.
 
-### Download the entire tutorial repository
-```
-git clone https://github.com/havardf/locationforecast-tutorial.git
-```
 
 ### Copy css
 This stylesheet setup styles the web page we are going to make. The CSS comes from the following framework: https://milligram.io/.
@@ -157,9 +115,95 @@ copy locationforecast-tutorial/src/createHTMLTable.js src/
 ``` 
 
 ### Javascript 2: Call to locationforecast
+So, now we are going to create the javascript code that actually requests data from locationforecast and extracts forecast values from the response.
 
+Open your favourite editor, and create a new file `src/weatherforecast.js`.
 
-### Javascript 2: Present forecast
+First thing to do is to create the objects defining the places we want forecast for. Look at the following block and type it into the top of the file `src/weatherforecast.js`.
+```
+let places = [
+    {
+        name: "Lilongwe",
+        forecastURL: "/weatherapi/locationforecast/2.0?lat=-13.9833&lon=33.7833"
+    },
+    {
+        name: "Blantyre",
+        forecastURL: "/weatherapi/locationforecast/2.0?lat=-15.786111&lon=35.005833"
+    },
+    {
+        name: "Mzuzu",
+        forecastURL: "/weatherapi/locationforecast/2.0?lat=-11.45807&lon=34.015131"
+    }
+];
+```
+
+Then, we need to define the parameters we want to display in our forecast. Add the following block:
+```
+let forecastParameters = [
+    {
+        tableName: "Temperature (C)",
+        valueFunction: airTemperature
+    },
+    {
+        tableName: "Wind Speed (m/s)",
+        valueFunction: windSpeed
+    },
+    {
+        tableName: "Precipitation (mm)",
+        valueFunction: precipitation 
+    }
+];
+```
+`tableName` specifies the human readable text for that parameter. `valueFunction` refers to a function responsible for returning the forecast value for that parameter. We will define those value functions soon.
+
+Now its time to add the function that is responsible for calling the web service and getting back the forecast response. Actually, the function will first contact the nginx proxy and the proxy will send the request on to api.met.no.
+
+```
+function weatherForecast(place) {
+    let xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 203) {
+            let forecast = JSON.parse(this.responseText);
+
+            createTable(places[place].name, forecast);
+        }
+    };
+    xmlhttp.open("GET", places[place].forecastURL, true);
+    xmlhttp.send();
+}
+```
+So, this function calls the web service to get a forecast for the given place, and then it will call a function to present that forecast on the web page. But, this will not work unless we first implement the value functions mentioned earlier.
+
+Lets do that now. Each forecast parameter will have its own function. Each function is small, all its doing is finding the value for its parameter inside the forecast json document.
+
+To be a bit more specific, each function is finding a parameter value for a specific time. The forecast is a timeseries. The timeseries consists of an array of forecast times. Each forecast time has all the parameter values for that time.
+
+If you want to look at an example of a complete forecast json respons, you can take a look here: https://api.met.no/weatherapi/locationforecast/2.0?lat=-13.9833&lon=33.7833.
+
+Now, add the following block to your javascript file:
+```
+function airTemperature(forecastTime) {
+    return forecastTime.data.instant.details.air_temperature;
+}
+
+function precipitation(forecastTime) {
+    if (forecastTime.data.next_1_hours != undefined) {
+        return forecastTime.data.next_1_hours.details.precipitation_amount;
+    }
+    else if (forecastTime.data.next_6_hours != undefined) {
+        return forecastTime.data.next_6_hours.details.precipitation_amount;
+    }
+    else {
+        return "";
+    }
+}
+
+function windSpeed(forecastTime) {
+    return forecastTime.data.instant.details.wind_speed;
+}
+```
+
 
 ## Start finished setup
 ```
