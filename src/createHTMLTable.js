@@ -1,3 +1,22 @@
+document.onreadystatechange = () => {
+    if (document.readyState === 'complete') {
+        createPlaces(places);
+    }
+};
+
+function createPlaces(places) {
+    let placeButtons = document.getElementById('places');
+
+    places.forEach((place, index) => {
+        let placeButton = document.createElement('button');
+        placeButton.classname = "button";
+        placeButton.onclick = function () { weatherForecast(index) };
+        placeButton.appendChild(document.createTextNode(place.name));
+
+        placeButtons.appendChild(placeButton);
+    })
+}
+
 function createTable(place, forecast) {
     let oldweatherForecast = document.getElementById('weatherForecast');
     let weatherForecast = document.createElement("div");

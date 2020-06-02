@@ -1,17 +1,17 @@
-let places = {
-    "lilongwe": {
+let places = [
+    {
         name: "Lilongwe",
         forecastURL: "/weatherapi/locationforecast/2.0?lat=-13.9833&lon=33.7833"
     },
-    "blantyre": {
+    {
         name: "Blantyre",
         forecastURL: "/weatherapi/locationforecast/2.0?lat=-15.786111&lon=35.005833"
     },
-    "mzuzu": {
+    {
         name: "Mzuzu",
         forecastURL: "/weatherapi/locationforecast/2.0?lat=-11.45807&lon=34.015131"
     }
-};
+];
 
 let forecastParameters = [
     {
@@ -28,7 +28,7 @@ let forecastParameters = [
     }
 ];
 
-// 
+
 function weatherForecast(place) {
     let xmlhttp = new XMLHttpRequest();
 
