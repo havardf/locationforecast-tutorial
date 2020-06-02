@@ -37,8 +37,8 @@ git clone https://github.com/havardf/locationforecast-tutorial.git
 
 ### Prepare nginx directories for this tutorial
 ```
-mkdir tutorial-conf
-mkdir tutorial-src
+mkdir nginx
+mkdir src
 ```
 
 ### Create nginx configuration
@@ -46,11 +46,11 @@ The nginx configuration handles both serving of web page files and proxying traf
 
 Copy the config file from the locationforecast-tutorial repository:
 ```
-copy locationforecast-tutorial/nginx/nginx.conf tutorial-conf/nginx.conf
+copy locationforecast-tutorial/nginx/nginx.conf nginx/nginx.conf
 ```
 
 ### Create empty index page
-Create a new file: `tutorial-src/index.html`. Write the below in that file, and save.
+Create a new file: `src/index.html`. Write the below in that file, and save.
 
 ```
 <html lang="en">
@@ -62,7 +62,7 @@ Create a new file: `tutorial-src/index.html`. Write the below in that file, and 
 
 ### Start/stop nginx
 ```
-start ../nginx -p ./ -c ./tutorial-conf/nginx.conf
+start nginx -p ./ -c ./nginx/nginx.conf
 ```
 
 ### Test nginx setup
@@ -77,13 +77,13 @@ This stylesheet setup styles the web page we are going to make. The CSS comes fr
 
 ```
 mkdir src/css
-copy locationforecast-tutorial/src/css/* tutorial-src/css/
+copy locationforecast-tutorial/src/css/* src/css/
 ```
 
 ### Create index.html
 Now, we are going to create the actual index.html for our forecast web page.
 
-Again, open the src/index.html file in your editor. Delete everyting there, and write in the following:
+Again, open the `src/index.html` file in your editor. Delete everyting there, and write in the following:
 ```
 <html lang="en">
     <head>
@@ -109,15 +109,15 @@ Now, save that file.
 Now, it will be the job of the javascript code to generate the forecast presented on the web page. We will not go into the details of the actual HTML generation,
 so please just copy over the file that handles all that:
 ```
-copy locationforecast-tutorial/src/createHTMLTable.js tutorial-src/
+copy locationforecast-tutorial/src/createHTMLTable.js src/
 ``` 
 
 ### Javascript 2: Call to locationforecast
 So, now we are going to create the javascript code that actually requests data from locationforecast and extracts forecast values from the response.
 
-Open your favourite editor, and create a new file `tutorial-src/weatherforecast.js`.
+Open your favourite editor, and create a new file `src/weatherforecast.js`.
 
-First thing to do is to create the objects defining the places we want forecast for. Look at the following block and type it into the top of the file `tutorial-src/weatherforecast.js`.
+First thing to do is to create the objects defining the places we want forecast for. Look at the following block and type it into the top of the file `src/weatherforecast.js`.
 ```
 let places = [
     {
@@ -251,7 +251,7 @@ Finally, precipication is handled specially, since the values for precipitation 
 Now, everything should be in place.
 Start nginx again:
 ```
-start ../nginx -p ./ -c ./tutorial-conf/nginx.conf
+start nginx -p ./ -c ./nginx/nginx.conf
 ```
 
 Go to `http://localhost:9080` in your browser. Click on one of the listed places, and you will get a forecast for that place.
