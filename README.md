@@ -249,7 +249,7 @@ So, e.g, `airTemperature` function simply finds the correct value for a given ti
 
 Finally, precipication is handled specially, since the values for precipitation are not for a time instant, but for a period. The period (1 hour, 6 hour) are specified explicitly in the json structure, e.g `next_1_hours`. When the time resolution for the timeseries switches from 1 hour to 6 hour, we must also switch the name of the json attribute we use. If that is not done, you will not get any precipitation values for the second half of the timeseries.
 
-## Start finished setup
+## Tutorial step 3: Start finished setup
 Now, everything should be in place.
 Start nginx again:
 ```
