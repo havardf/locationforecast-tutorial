@@ -12,6 +12,10 @@ The purpose of the tutorial is to learn how to create an application for product
 
 The next chapters are meant to be done as ordered. Please type in the configuration and code blocks instead of copy-and-paste.
 
+A network diagram of what we are creating here looks like this:
+
+![diagram of locationforecast-tutorial](locationforecast-tutorial.svg)
+
 ## Tools needed before starting with the tutorial
 
 ### Install git
@@ -27,4 +31,3 @@ Each step in the tutorial has its own markdown file, so you if want to do the tu
  - [Setting up nginx](tutorial/step1-nginx.md)
  - [Create web page](tutorial/step2-webpage.md)
  - [See results](tutorial/step3-finish.md)
- 
