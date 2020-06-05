@@ -29,9 +29,9 @@ mkdir src
 ### Create nginx configuration
 The nginx configuration handles both serving of web page files and proxying traffic to api.met.no.
 
-Copy the config file from the locationforecast-tutorial repository:
+Copy the config file from the locationforecast-tutorial-master repository:
 ```
-copy locationforecast-tutorial/nginx/nginx.conf nginx/nginx.conf
+copy locationforecast-tutorial-master/nginx/nginx.conf nginx/nginx.conf
 ```
 
 ### Create empty index page

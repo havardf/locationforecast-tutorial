@@ -8,7 +8,7 @@ This stylesheet setup styles the web page we are going to make. The CSS comes fr
 
 ```
 mkdir src/css
-copy locationforecast-tutorial/src/css/* src/css/
+copy locationforecast-tutorial-master/src/css/* src/css/
 ```
 
 ### Create index.html
@@ -40,7 +40,7 @@ Now, save that file.
 Now, it will be the job of the javascript code to generate the forecast presented on the web page. We will not go into the details of the actual HTML generation,
 so please just copy over the file that handles all that:
 ```
-copy locationforecast-tutorial/src/createHTMLTable.js src/
+copy locationforecast-tutorial-master/src/createHTMLTable.js src/
 ``` 
 
 ### Javascript 2: Call to locationforecast
