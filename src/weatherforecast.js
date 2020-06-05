@@ -30,17 +30,20 @@ let forecastParameters = [
 
 
 function weatherForecast(place) {
-    let xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 203) {
-            let forecast = JSON.parse(this.responseText);
-
-            createTable(places[place].name, forecast);
-        }
-    };
-    xmlhttp.open("GET", places[place].forecastURL, true);
-    xmlhttp.send();
+    let url = places[place].forecastURL;
+    fetch(url)
+        .then( response => {
+            if (! response.ok){
+                throw new Error("Request failed with status code " + response.status);
+            }
+            return response.json();
+        })
+        .then( forecast => {
+            createTable(places[place].name, forecast)
+        })
+        .catch( err => {
+            console.log("Request for " + url + "failed.", err)
+        });
 }
 
 function airTemperature(forecastTime) {

@@ -1,7 +1,7 @@
-# Tutorial for using https://api.met.no/weatherapi/locationforecast
+# Tutorial for using forecast data from api.met.no
 
 ## What is this?
-This repositority is a tutorial for using https://api.met.no/weatherapi/locationforecast/2.0 to present a weather forecast on a web page. A diagram of the setup is shown below:
+This repositority is a tutorial for using https://api.met.no/weatherapi/locationforecast/2.0/documentation to present a weather forecast on a web page. A diagram of the setup is shown below:
 
 The components of this setup are:
 - Locationforecast: A web service that gives you a 10-day forecast for any location on earth.
