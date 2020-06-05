@@ -11,8 +11,13 @@ cd nginx-<version>
 ```
 
 ### Download the entire tutorial repository
+Go to https://github.com/havardf/locationforecast-tutorial. Click on `Clone or download` and chose the option `Download ZIP`.
+
+Go to you download directory and move the file `locationforecast-tutorial-master.zip` to your `nginx-<version>` directory. 
+Then go back to your shell and do:
+
 ```
-git clone https://github.com/havardf/locationforecast-tutorial.git
+unzip locationforecast-tutorial-master.zip
 ```
 
 ### Prepare nginx directories for this tutorial
