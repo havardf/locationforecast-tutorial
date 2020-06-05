@@ -6,8 +6,8 @@ Go to http://nginx.org/en/download.html and download the `Stable version` of ngi
 
 Open a shell and go to your download directory and do the following:
 ```
-unzip nginx-1.18.0.zip
-cd nginx-1.18.0
+unzip nginx-<version>.zip
+cd nginx-<version>
 ```
 
 ### Download the entire tutorial repository
