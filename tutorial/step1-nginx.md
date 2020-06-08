@@ -4,8 +4,9 @@ Nginx setup will provide distribution of the web page, and proxy traffic between
 ### Install nginx
 Go to http://nginx.org/en/download.html and download the `Stable version` of nginx for windows.
 
-Open a shell and go to your download directory and do the following:
+Now, open a terminal/shell/windows powershell and do the folowing:
 ```
+cd <you download directory>
 unzip nginx-<version>.zip
 cd nginx-<version>
 ```

@@ -12,13 +12,6 @@ A diagram of the tutorial application looks like this:
 
 ![diagram of locationforecast-tutorial](locationforecast-tutorial.svg)
 
-## Tools needed before starting with the tutorial
-
-### Install git
-You will need git to download this repository.
-
-Follow the instructions from here: https://git-scm.com/downloads.
-
 
 ## Start tutorial
 Each step in the tutorial is placed in its own file, so you if want to do the tutorial over multiple sessions, you can go directly to the step where you left off.
