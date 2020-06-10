@@ -7,23 +7,39 @@ Go to http://nginx.org/en/download.html and download the `Stable version` of ngi
 Now, open a terminal/shell/windows powershell and do the folowing:
 ```
 cd <you download directory>
+```
+```
 unzip nginx-<version>.zip
-cd nginx-<version>
+```
+```
+mv nginx-<version> C:\Prog
+```
+```
+cd C:\Prog\nginx-<version>
 ```
 
 ### Download the entire tutorial repository
 Go to https://github.com/havardf/locationforecast-tutorial. Click on `Clone or download` and chose the option `Download ZIP`.
 
-Go to you download directory and move the file `locationforecast-tutorial-master.zip` to your `nginx-<version>` directory. 
-Then go back to your shell and do:
+Now, decompress and move the tutorial repository to the correct directory:
 
+```
+cd <your download directory>
+```
 ```
 unzip locationforecast-tutorial-master.zip
 ```
+```
+mv locationforecast-tutorial-master C:\Prog\nginx-<version>
+```
 
 ### Prepare nginx directories for this tutorial
+Make sure your current directory are `C:\Prog\nginx-<version>` and do:
+
 ```
 mkdir nginx
+```
+```
 mkdir src
 ```
 
@@ -32,11 +48,11 @@ The nginx configuration handles both serving of web page files and proxying traf
 
 Copy the config file from the locationforecast-tutorial-master repository:
 ```
-copy locationforecast-tutorial-master/nginx/nginx.conf nginx/nginx.conf
+copy locationforecast-tutorial-master\nginx\nginx.conf nginx\nginx.conf
 ```
 
 ### Create empty index page
-Create a new file: `src/index.html`. Write the below in that file, and save.
+Open your favourite code editor(brackets, notepad, vscode etc.) and create a new file `C:\Prog\nginx-<version>\src\index.html`. Write the below in that file, and save.
 
 ```
 <html lang="en">
@@ -47,9 +63,12 @@ Create a new file: `src/index.html`. Write the below in that file, and save.
 ```
 
 ### Start/stop nginx
+Make sure your terminal window is in directory `C:\Prog\nginx-<version>`
 ```
-start nginx -p ./ -c ./nginx/nginx.conf
+nginx -p .\ -c nginx\nginx.conf
 ```
+
+When you have tested and wants to stop nginx again, you can type `Ctrl-C` in the terminal.
 
 ### Test nginx setup
 Open your favourite browser and go to `http://localhost:9080`. If you now see a web page with the text `Weather in Malawi`, everything should be working ok so far! Great!

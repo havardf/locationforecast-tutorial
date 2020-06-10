@@ -6,15 +6,24 @@ Now we are going to create a simple web page that presents weather forecast from
 ### Copy css
 This stylesheet setup styles the web page we are going to make. The CSS comes from the following framework: https://milligram.io/.
 
+Go to `C:\Prog\nginx-<version>` your terminal and run the following commands:
 ```
-mkdir src/css
-copy locationforecast-tutorial-master/src/css/* src/css/
+cd src
+```
+```
+mkdir css
+```
+```
+cd ..
+```
+```
+copy locationforecast-tutorial-master\src\css\* src\css\
 ```
 
 ### Create index.html
 Now, we are going to create the actual index.html for our forecast web page.
 
-Again, open the `src/index.html` file in your editor. Delete everyting there, and write in the following:
+Again, open the `src\index.html` file in your editor. Delete everyting thats already in there, and write in the following:
 ```
 <html lang="en">
     <head>
@@ -40,16 +49,16 @@ Now, save that file.
 Now, it will be the job of the javascript code to generate the forecast presented on the web page. We will not go into the details of the actual HTML generation,
 so please just copy over the file that handles all that:
 ```
-copy locationforecast-tutorial-master/src/createHTMLTable.js src/
+copy locationforecast-tutorial-master\src\createHTMLTable.js src\
 ``` 
 
 ### Javascript 2: Call to locationforecast
 So, now we are going to create the javascript code that actually requests data from locationforecast and extracts forecast values from the response.
 
-Open your favourite editor, and create a new file `src/weatherforecast.js`.
+Open your favourite editor, and create a new file `src\weatherforecast.js`.
 
-First thing to do is to create the objects defining the places we want forecast for. Look at the following block and type it into the top of the file `src/weatherforecast.js`.
-```
+First thing to do is to create the objects defining the places we want forecast for. Look at the following block and type it into the top of the file `src\weatherforecast.js`.
+```js
 let places = [
     {
         name: "Lilongwe",
@@ -67,7 +76,7 @@ let places = [
 ```
 
 Then, we need to define the parameters we want to display in our forecast. Add the following block:
-```
+```js
 let forecastParameters = [
     {
         tableName: "Temperature (C)",
@@ -87,7 +96,7 @@ let forecastParameters = [
 
 Now its time to add the function that is responsible for calling the web service and getting back the forecast response. Actually, the function will first contact the nginx proxy and the proxy will send the request on to api.met.no.
 
-```
+```js
 function weatherForecast(place) {
     let url = places[place].forecastURL;
     fetch(url)
@@ -114,7 +123,7 @@ To be a bit more specific, each function is finding a parameter value for a spec
 If you want to look at an example of a complete forecast json respons, you can take a look here: https://api.met.no/weatherapi/locationforecast/2.0?lat=-13.9833&lon=33.7833.
 
 Now, add the following block to your javascript file:
-```
+```js
 function airTemperature(forecastTime) {
     return forecastTime.data.instant.details.air_temperature;
 }
@@ -135,9 +144,10 @@ function windSpeed(forecastTime) {
     return forecastTime.data.instant.details.wind_speed;
 }
 ```
+So, now your `src\weatherforecast.js` file is complete, save and close it and you are ready to run the setup. But before we go and do that, read on for a bit of explanation of how the code extracts values from the forecast json document.
 
-So, e.g, `airTemperature` function simply finds the correct value for a given time through a json structure like this:
-```
+So, e.g, `airTemperature` function simply finds the correct value for a given time by accessing values in a json object. The below block is NOT something you should put into the file, its a snippet of the json response from the forecast, showing how the forecast timeseries is structured:
+```json
 {
         "time": "2020-06-02T11:00:00Z",
         "data": {
